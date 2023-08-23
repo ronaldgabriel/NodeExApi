@@ -1,24 +1,9 @@
-const express = require('express')
-const app = express()
-const morgan=require('morgan');
-const port = 3000
+const http = require('http')
+const fs = require('fs')
 
-
-//Middleware
-app.use(morgan('dev'));
-app.use(express.urlencoded({extended:false}));
-app.use(express.json());
-
-app.set('json spaces', 2)
- 
-app.get('/', (req, res) => {    
-    res.json(
-        {
-            "Title": "Hola mundo"
-        }
-    );
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'content-type': 'text/html' })
+  fs.createReadStream('./src/index.html').pipe(res)
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+server.listen(process.env.PORT || 3000)
